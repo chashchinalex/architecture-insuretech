@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: insuretech
+  labels:
+    app: insuretech
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: insuretech
+  template:
+    metadata:
+      labels:
+        app: insuretech
+    spec:
+      containers:
+        - name: insuretech
+          image: ghcr.io/chashchinalex/scaletestapp:arm64
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              memory: "10Mi"
+            limits:
+              memory: "10Mi"

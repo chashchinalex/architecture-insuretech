@@ -1,0 +1,26 @@
+prometheus:
+  url: http://kube-prometheus-stack-prometheus.monitoring.svc
+  port: 9090
+  scheme: http
+  insecureSkipVerify: true
+
+rules:
+  default: false
+  resource: []        
+  custom:
+    - seriesQuery: 'http_requests_total{namespace!="",pod!=""}'
+      resources:
+        overrides:
+          namespace:
+            resource: namespace
+          pod:
+            resource: pod
+      name:
+        as: "rps_per_pod"
+      metricsQuery: |
+        sum by (namespace, pod) (
+          rate(http_requests_total{<<.LabelMatchers>>}[1m])
+        )
+
+metricsRelistInterval: 30s
+logLevel: 6

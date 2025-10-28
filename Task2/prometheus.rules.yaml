@@ -1,0 +1,6 @@
+groups:
+- name: insuretech-rps-rules
+  interval: 15s
+  rules:
+  - record: job:http_requests_per_second:rate1m
+    expr: sum by (namespace, pod) (rate(http_requests_total[1m]))

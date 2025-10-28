@@ -1,0 +1,14 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: insuretech-monitor
+  labels:
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app: insuretech
+  endpoints:
+    - port: http
+      interval: 15s
+      path: /metrics
