@@ -1,0 +1,51 @@
+scalar Date
+
+
+"Основная сущность клиента."
+type Client {
+  "ID клиента"
+  id: ID!
+  "Имя/ФИО клиента"
+  name: String
+  "Возраст клиента"
+  age: Int
+
+  "Документы клиента (lazy-resolved, batched). Соответствует REST: GET /v1/clients/{id}/documents"
+  documents: [Document!]!
+
+  "Родственники клиента (lazy-resolved, batched). Соответствует REST: GET /v1/clients/{id}/relatives"
+  relatives: [Relative!]!
+}
+
+"Документ клиента."
+type Document {
+  id: ID!
+  "Тип документа (паспорт/вод.удост. и т.д.)"
+  type: String!
+  number: String
+  issueDate: Date
+  expiryDate: Date
+}
+
+"Родственник клиента."
+type Relative {
+  id: ID!
+  relationType: String!
+  name: String
+  age: Int
+}
+
+type Query {
+  "Получить клиента по ID. REST: GET /v1/clients/{id}"
+  client(id: ID!): Client
+
+  "Получить документы клиента. REST: GET /v1/clients/{id}/documents"
+  documentsByClient(id: ID!): [Document!]!
+
+  "Получить родственников клиента. REST: GET /v1/clients/{id}/relatives"
+  relativesByClient(id: ID!): [Relative!]!
+}
+
+schema {
+  query: Query
+}
